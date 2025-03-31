@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Popup Redirect - Settings</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #ff0000;
+      --primary-dark: #cc0000;
+      --secondary: #282828;
+      --text: #222222;
+      --light-bg: #f8f8f8;
+      --card-bg: #ffffff;
+      --border: #e5e5e5;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      width: 340px;
+      padding: 0;
+      background-color: var(--light-bg);
+      color: var(--text);
+    }
+    
+    .header {
+      background-color: var(--primary);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+    
+    .logo {
+      font-size: 24px;
+    }
+    
+    .container {
+      padding: 20px;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    
+    .setting-group {
+      margin-bottom: 16px;
+    }
+    
+    .setting-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .setting-label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--secondary);
+    }
+    
+    .setting-label i {
+      margin-right: 8px;
+      color: var(--primary);
+    }
+    
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+    
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1);
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .version {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <i class="fas fa-video logo"></i>
+    <h1>YouTube Popup Redirect</h1>
+  </div>
+  
+  <div class="container">
+    <div class="card">
+      <div class="setting-group">
+        <div class="setting-label">
+          <i class="fas fa-play-circle"></i>
+          <span>Regular Videos</span>
+        </div>
+        <select id="redirect">
+          <option value="ask">Ask before redirecting</option>
+          <option value="always">Always redirect</option>
+          <option value="never">Never redirect</option>
+        </select>
+      </div>
+      
+      <div class="setting-group">
+        <div class="setting-label">
+          <i class="fas fa-mobile-alt"></i>
+          <span>YouTube Shorts</span>
+        </div>
+        <select id="redirect-short">
+          <option value="ask">Ask before redirecting</option>
+          <option value="always">Always redirect</option>
+          <option value="never">Never redirect</option>
+        </select>
+      </div>
+    </div>
+    
+    <button id="resetDefaults" class="btn">
+      <i class="fas fa-undo"></i> Reset to Defaults
+    </button>
+    
+    <div class="version">
+      Version 1.2
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
