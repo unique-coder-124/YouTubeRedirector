@@ -4,11 +4,16 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
     // Handle YouTube watch videos
     if (url.hostname === 'www.youtube.com' && url.pathname === '/watch') {
-      chrome.storage.sync.get(['redirectSetting'], (settings) => {
+      chrome.storage.sync.get(['redirectSetting', 'showRelatedVideosSetting'], (settings) => {
         const redirectSetting = settings.redirectSetting || 'never';
+        const showRelatedVideosSetting = settings.showRelatedVideosSetting || 'never';
 
         if (redirectSetting === 'always') {
-          const popupUrl = url.toString().replace('/watch', '/watch_popup') + (url.search ? '&' : '?') + 'autoplay=1';
+          const popupUrl = url.toString().replace(
+            '/watch',
+            '/watch_popup'
+          ) + (url.search ? '&' : '?') + 'autoplay=1' +
+          ((showRelatedVideosSetting == 'never') ? '&rel=0' : '');
           chrome.scripting.executeScript({
             target: { tabId },
             func: redirectAndPopHistory,
@@ -26,13 +31,16 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
     // Handle YouTube shorts
     if (url.hostname === 'www.youtube.com' && url.pathname.startsWith('/shorts')) {
-      chrome.storage.sync.get(['redirectShortSetting', 'redirectSetting'], (settings) => {
+      chrome.storage.sync.get(['redirectShortSetting', 'redirectSetting', 'showRelatedVideosSetting'], (settings) => {
         const redirectShortSetting = settings.redirectShortSetting || 'never';
         const redirectSetting = settings.redirectSetting || 'never';
+        const showRelatedVideosSetting = settings.showRelatedVideosSetting || 'never';
 
-        const popupUrl = redirectSetting === 'always'
-          ? url.toString().replace('/shorts', '/embed') + (url.search ? '&' : '?') + 'autoplay=1'
-          : url.toString().replace('/shorts', '/watch') + (url.search ? '&' : '?') + 'autoplay=1';
+        const popupUrl = url.toString().replace(
+          '/shorts', 
+          ((redirectSetting === 'always') ? '/embed' : '/watch')
+        ) + (url.search ? '&' : '?') + 'autoplay=1' +
+        ((showRelatedVideosSetting == 'never') ? '&rel=0' : '');
 
         if (redirectShortSetting === 'always') {
           chrome.scripting.executeScript({
