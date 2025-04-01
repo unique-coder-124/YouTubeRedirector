@@ -9,7 +9,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
         if (redirectSetting === 'always') {
           const popupUrl = url.toString().replace('/watch', '/watch_popup') + (url.search ? '&' : '?') + 'autoplay=1';
-          chrome.tabs.update(tabId, { url: popupUrl });
+          chrome.scripting.executeScript({
+            target: { tabId },
+            func: redirectAndPopHistory,
+            args: [popupUrl]
+          });
         } else if (redirectSetting === 'ask') {
           chrome.scripting.executeScript({
             target: { tabId },
@@ -31,7 +35,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
           : url.toString().replace('/shorts', '/watch') + (url.search ? '&' : '?') + 'autoplay=1';
 
         if (redirectShortSetting === 'always') {
-          chrome.tabs.update(tabId, { url: popupUrl });
+          chrome.scripting.executeScript({
+            target: { tabId },
+            func: redirectAndPopHistory,
+            args: [popupUrl]
+          });
         } else if (redirectShortSetting === 'ask') {
           chrome.scripting.executeScript({
             target: { tabId },
@@ -49,4 +57,9 @@ function askUserRedirect(redirectUrl) {
   if (confirm('Do you want to redirect this video to popup mode?')) {
     window.location.href = redirectUrl;
   }
+}
+
+function redirectAndPopHistory(newUrl) {
+  history.replaceState(null, "", newUrl); // Replaces the last entry without going back
+  window.location.href = newUrl;
 }
